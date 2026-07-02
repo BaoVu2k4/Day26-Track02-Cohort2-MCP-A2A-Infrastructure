@@ -5,7 +5,7 @@
 - **Mã học viên:** 2A202600610
 - **Họ và tên:** Vũ Quang Bảo
 - **Bài lab:** Day 26 - Track 02 - Cohort 2 - MCP/A2A Infrastructure
-- **Kho mã nguồn:** `BaoVu2k4/Day26-Track02-Cohort2-MCP-A2A-Infrastructure`
+- **Repository:** `BaoVu2k4/Day26-Track02-Cohort2-MCP-A2A-Infrastructure`
 
 ## Tóm tắt bài làm
 
@@ -15,23 +15,23 @@ Bài nộp hoàn thiện lab hạ tầng MCP/A2A với các thành phần chính
 - MCP server chạy qua `stdio`, có governance guard cho từng tool.
 - Ba A2A specialist chạy trên các cổng `8001`, `8002`, `8003`.
 - ADK Web orchestrator chạy trên cổng `8000`.
-- Định tuyến ngữ nghĩa và chuỗi fallback.
-- Quản trị dữ liệu: ma trận capability, audit log, SQL read-only guard, chặn từ khóa nhạy cảm, trace metadata.
+- Semantic routing và fallback chain.
+- Data governance: capability matrix, audit log, SQL read-only guard, chặn từ khóa nhạy cảm, trace metadata.
 - Capstone W1-W5 đã được ghi kết quả `ĐẠT` trong notebook.
 
 ## Bảng đối chiếu rubric
 
 | Yêu cầu | Trạng thái | Minh chứng |
 |---|---:|---|
-| MCP server cung cấp công cụ nghiên cứu | ĐẠT | `mcp_server/research_tools_server.py` |
+| MCP server expose research tools | ĐẠT | `mcp_server/research_tools_server.py` |
 | Thêm MCP tool thứ tư `count_words` | ĐẠT | `mcp_server/research_tools_server.py`, `lab_utils/governance/policy.json` |
-| Search agent chuyên trách qua A2A | ĐẠT | `agents/search_agent/agent.py`, `http://localhost:8001/.well-known/agent-card.json` |
-| Database agent chuyên trách qua A2A | ĐẠT | `agents/database_agent/agent.py`, `http://localhost:8002/.well-known/agent-card.json` |
-| Synthesis agent chuyên trách qua A2A | ĐẠT | `agents/synthesis_agent/agent.py`, `http://localhost:8003/.well-known/agent-card.json` |
-| Orchestrator gọi được cả ba agent chuyên trách | ĐẠT | `agents/orchestrator/agent.py` |
-| Demo agent registry | ĐẠT | `lab_utils/agent_registry.py`, notebook Module 3 |
-| Bộ định tuyến ngữ nghĩa và chuỗi fallback | ĐẠT | `lab_utils/semantic_router.py`, `lab_utils/routing_tool.py` |
-| Chính sách governance và audit log | ĐẠT | `lab_utils/governance/`, audit log sinh cục bộ tại `logs/governance_audit.jsonl` |
+| A2A search specialist | ĐẠT | `agents/search_agent/agent.py`, `http://localhost:8001/.well-known/agent-card.json` |
+| A2A database specialist | ĐẠT | `agents/database_agent/agent.py`, `http://localhost:8002/.well-known/agent-card.json` |
+| A2A synthesis specialist | ĐẠT | `agents/synthesis_agent/agent.py`, `http://localhost:8003/.well-known/agent-card.json` |
+| Orchestrator consume được cả ba specialist | ĐẠT | `agents/orchestrator/agent.py` |
+| Agent registry demo | ĐẠT | `lab_utils/agent_registry.py`, notebook Module 3 |
+| Semantic router và fallback chain | ĐẠT | `lab_utils/semantic_router.py`, `lab_utils/routing_tool.py` |
+| Governance policy và audit log | ĐẠT | `lab_utils/governance/`, audit log sinh cục bộ tại `logs/governance_audit.jsonl` |
 | SQL read-only guard chặn DDL/DML | ĐẠT | Kết quả W5, `GovernanceGuard._validate_sql()` |
 | Demo HITL/trace policy | ĐẠT | Notebook Module 5 |
 | ADK Web W1 transfer sang `search_agent` | ĐẠT | `artifacts/screenshots/adk_web_w1_chat.png` |
