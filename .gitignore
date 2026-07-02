@@ -249,3 +249,13 @@ Thumbs.db
 
 # Large course PDF (~1.8 MB) — host on LMS or use Git LFS
 day26-mcp-a2a-infrastructure-agentic-routing.pdf
+
+# Chien luoc lam lab ca nhan - chi dung local, khong push
+LAB_STRATEGY.md
+
+# Temporary browser automation dependencies for local screenshots
+node_modules/
+
+# Local secret overrides / candidate Gemini keys
+.env.local
+.google_api_keys.local

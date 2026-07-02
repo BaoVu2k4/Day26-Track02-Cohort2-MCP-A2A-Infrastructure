@@ -96,4 +96,4 @@ adk web agents/orchestrator
 
 ## Sản phẩm lab
 
-Hệ 4 agent qua A2A + MCP, semantic routing (`suggest_routing`), **data governance** và audit trace.
+Hệ 4 agent qua A2A + MCP, 4 MCP tools (`search_documents`, `sql_query`, `summarize_text`, `count_words`), semantic routing (`suggest_routing`), **data governance** và audit trace.

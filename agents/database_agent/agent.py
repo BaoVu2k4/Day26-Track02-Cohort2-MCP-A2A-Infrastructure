@@ -1,6 +1,7 @@
 """Database specialist — expose qua A2A cổng 8002 (có governance)."""
 
 import sys
+import os
 from pathlib import Path
 
 from google.adk.agents import Agent
@@ -22,6 +23,7 @@ from lab_utils.governance import (
 )
 
 guard = get_guard()
+MODEL_NAME = os.getenv("GOOGLE_MODEL", "gemini-2.5-flash")
 
 
 def run_sql_query(sql: str) -> dict:
@@ -56,7 +58,7 @@ def run_sql_query(sql: str) -> dict:
 
 root_agent = Agent(
     name="database_agent",
-    model="gemini-2.5-flash",
+    model=MODEL_NAME,
     description="Truy vấn database chỉ đọc và trả về metrics có cấu trúc.",
     instruction=(
         "Bạn là chuyên gia database. Chỉ chạy truy vấn SELECT qua run_sql_query. "

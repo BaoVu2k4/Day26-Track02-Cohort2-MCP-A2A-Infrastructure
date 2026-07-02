@@ -9,11 +9,13 @@ from dotenv import load_dotenv
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ENV_FILE = PROJECT_ROOT / ".env"
+LOCAL_ENV_FILE = PROJECT_ROOT / ".env.local"
 
 
 def load_lab_env() -> None:
-    """Nạp GOOGLE_API_KEY và biến lab từ .env (idempotent)."""
+    """Nạp GOOGLE_API_KEY và biến lab từ .env/.env.local (idempotent)."""
     load_dotenv(ENV_FILE)
+    load_dotenv(LOCAL_ENV_FILE, override=True)
     os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "FALSE")
 
 

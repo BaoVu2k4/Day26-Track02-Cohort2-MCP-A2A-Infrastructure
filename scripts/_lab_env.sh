@@ -4,17 +4,26 @@
 load_dotenv_file() {
   local root="$1"
   local env_file="$root/.env"
+  local local_env_file="$root/.env.local"
   if [[ ! -f "$env_file" ]]; then
     echo "⚠ Không tìm thấy $env_file — GOOGLE_API_KEY có thể thiếu"
-    return 0
+  else
+    set -a
+    # shellcheck disable=SC1090
+    source "$env_file"
+    set +a
+    echo "→ .env loaded"
   fi
-  set -a
-  # shellcheck disable=SC1090
-  source "$env_file"
-  set +a
+  if [[ -f "$local_env_file" ]]; then
+    set -a
+    # shellcheck disable=SC1090
+    source "$local_env_file"
+    set +a
+    echo "→ .env.local loaded (overrides .env)"
+  fi
   export GOOGLE_GENAI_USE_VERTEXAI="${GOOGLE_GENAI_USE_VERTEXAI:-FALSE}"
   if [[ -z "${GOOGLE_API_KEY:-}" ]]; then
-    echo "⚠ GOOGLE_API_KEY trống trong .env"
+    echo "⚠ GOOGLE_API_KEY trống trong .env/.env.local"
   else
     echo "→ .env loaded (GOOGLE_API_KEY set)"
   fi

@@ -1,6 +1,7 @@
 """Synthesis specialist — expose qua A2A cổng 8003 (có governance)."""
 
 import sys
+import os
 from pathlib import Path
 
 from google.adk.agents import Agent
@@ -22,6 +23,7 @@ from lab_utils.governance import (
 )
 
 guard = get_guard()
+MODEL_NAME = os.getenv("GOOGLE_MODEL", "gemini-2.5-flash")
 
 
 def synthesize_report(findings: str, audience: str = "technical") -> dict:
@@ -64,7 +66,7 @@ def synthesize_report(findings: str, audience: str = "technical") -> dict:
 
 root_agent = Agent(
     name="synthesis_agent",
-    model="gemini-2.5-flash",
+    model=MODEL_NAME,
     description="Tổng hợp kết quả nghiên cứu thành báo cáo cuối có cấu trúc.",
     instruction=(
         "Bạn là chuyên gia tổng hợp báo cáo nghiên cứu. "

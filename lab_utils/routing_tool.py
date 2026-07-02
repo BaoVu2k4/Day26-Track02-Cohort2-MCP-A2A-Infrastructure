@@ -7,18 +7,18 @@ from lab_utils.semantic_router import AgentCapability, SemanticRouter
 _DEFAULT_AGENTS = [
     AgentCapability(
         name="search_agent",
-        description="Tìm kiếm web tài liệu nghiên cứu bằng chứng",
-        tags=["search", "web", "documents"],
+        description="Tìm kiếm web bài viết tài liệu MCP A2A bằng chứng",
+        tags=["search", "web", "documents", "tim", "bai_viet", "mcp", "a2a"],
     ),
     AgentCapability(
         name="database_agent",
-        description="SQL metrics phân tích database truy vấn SELECT",
-        tags=["sql", "metrics", "database"],
+        description="SQL metrics database truy vấn SELECT agent_metrics độ trễ trung bình",
+        tags=["sql", "metrics", "database", "select", "agent_metrics", "latency", "do_tre", "avg"],
     ),
     AgentCapability(
         name="synthesis_agent",
-        description="Tóm tắt kết hợp kết quả thành báo cáo cuối",
-        tags=["summary", "report", "synthesis"],
+        description="Tóm tắt tổng hợp findings thành báo cáo cuối executive",
+        tags=["summary", "report", "synthesis", "tom_tat", "tong_hop", "bao_cao", "executive"],
     ),
 ]
 

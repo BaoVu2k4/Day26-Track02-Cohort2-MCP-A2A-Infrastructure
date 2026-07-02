@@ -8,13 +8,69 @@ from __future__ import annotations
 
 import math
 import re
+import unicodedata
 from dataclasses import dataclass
 
 
+_STOPWORDS = {
+    "a",
+    "an",
+    "and",
+    "about",
+    "the",
+    "to",
+    "from",
+    "for",
+    "of",
+    "on",
+    "in",
+    "toi",
+    "can",
+    "hay",
+    "ve",
+    "viec",
+    "ap",
+    "dung",
+    "giao",
+    "thuc",
+    "mot",
+    "cac",
+    "cua",
+    "cho",
+    "ban",
+    "lam",
+    "duoc",
+    "gi",
+    "xin",
+    "chao",
+    "tu",
+    "trong",
+    "ngoai",
+    "la",
+    "va",
+    "hoac",
+    "voi",
+    "se",
+    "chon",
+    "nao",
+    "buoc",
+    "goi",
+    "nghien",
+    "cuu",
+}
+
+
+def _normalize(text: str) -> str:
+    decomposed = unicodedata.normalize("NFD", text.lower())
+    return "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
+
+
 def _tokenize(text: str) -> dict[str, float]:
-    tokens = re.findall(r"[a-z0-9]+", text.lower())
+    tokens = re.findall(r"\w+", _normalize(text), flags=re.UNICODE)
     counts: dict[str, float] = {}
     for token in tokens:
+        if len(token) <= 1 or token in _STOPWORDS:
+            continue
         counts[token] = counts.get(token, 0.0) + 1.0
     return counts
 
@@ -64,3 +120,26 @@ class SemanticRouter:
             return fallback
         name, score = candidates[0]
         return name if score >= self.threshold else fallback
+
+    def route_with_chain(self, request: str, chain: list[str]) -> str:
+        """Thử route chính; nếu điểm < ngưỡng, đi theo chuỗi fallback có thứ tự."""
+        candidates = self.route(request, top_k=1)
+        if candidates and candidates[0][1] >= self.threshold:
+            return candidates[0][0]
+
+        request_vec = _tokenize(request)
+        agents_by_name = {agent.name: agent for agent in self.agents}
+        for name in chain:
+            agent = agents_by_name.get(name)
+            if agent is None:
+                continue
+            corpus = " ".join([agent.description, " ".join(agent.tags)])
+            score = _cosine(request_vec, _tokenize(corpus))
+            if score >= self.threshold:
+                return name
+
+        if chain:
+            return chain[-1]
+        if candidates:
+            return candidates[0][0]
+        return "orchestrator"

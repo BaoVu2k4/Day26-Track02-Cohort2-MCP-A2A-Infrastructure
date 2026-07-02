@@ -43,6 +43,7 @@ SYNTHESIS_CARD = os.getenv(
 
 MCP_SERVER = PROJECT_ROOT / "mcp_server" / "research_tools_server.py"
 GOVERNANCE_ACTOR = "orchestrator"
+MODEL_NAME = os.getenv("GOOGLE_MODEL", "gemini-2.5-flash")
 guard = get_guard()
 
 # Kiểm tra kết nối MCP trước khi spawn subprocess
@@ -101,7 +102,7 @@ mcp_tools = McpToolset(
 
 root_agent = Agent(
     name="orchestrator",
-    model="gemini-2.5-flash",
+    model=MODEL_NAME,
     description="Điều phối nghiên cứu bằng cách ủy quyền cho search, database và synthesis specialist.",
     generate_content_config=types.GenerateContentConfig(
         thinking_config=types.ThinkingConfig(thinking_budget=0),
@@ -116,8 +117,9 @@ Quy tắc định tuyến:
 - Tra cứu web / tài liệu → transfer_to_agent(agent_name="search_agent")
 - Metrics / SQL → transfer_to_agent(agent_name="database_agent")
 - Tổng hợp báo cáo cuối → transfer_to_agent(agent_name="synthesis_agent")
-- MCP local: search_documents, sql_query, summarize_text (khi không cần A2A)
+- MCP local: search_documents, sql_query, summarize_text, count_words (khi không cần A2A)
 - suggest_routing: chỉ khi không chắc chọn agent nào
+- Nếu user yêu cầu gọi suggest_routing, phải gọi suggest_routing trước khi transfer_to_agent.
 
 Ví dụ: user nói "Chuyển sang search_agent..." →
   (a) trả lời "Tôi sẽ ủy quyền cho search_agent..."
